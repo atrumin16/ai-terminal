@@ -3,46 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quantum Terminal | AI Financial Hub</title>
+    <title>Quantum Terminal Pro</title>
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <header class="header">
-        <div class="logo">QUANTUM<span>TERMINAL</span></div>
-        <div class="search-container">
-            <input type="text" id="asset-search" placeholder="Search 2,000+ assets (btc, gold, eur, apple...)" oninput="searchAssets()">
-            <div id="search-results" class="search-results"></div>
+    <nav class="topbar">
+        <div class="logo">QUANTUM<span>PRO</span></div>
+        <div class="search-wrapper">
+            <input type="text" id="asset-search" placeholder="Search markets (e.g., btc, eur, xau)..." oninput="searchAssets()" autocomplete="off">
+            <div id="search-results" class="search-dropdown"></div>
         </div>
-        <div class="lang-switcher">
+        <div class="lang-btns">
             <button onclick="setLanguage('en')">EN</button>
             <button onclick="setLanguage('es')">ES</button>
         </div>
-    </header>
+    </nav>
 
-    <main class="container">
-        <div class="ia-panel">
-            <span class="ai-icon">🤖</span>
-            <div class="ai-content">
-                <small id="ai-label">AI MARKET SENTIMENT</small>
-                <div id="ia-status">Initializing neural engine...</div>
+    <main class="terminal-layout">
+        
+        <aside class="sidebar">
+            <div class="ai-widget">
+                <div class="ai-header">
+                    <span>🧠</span>
+                    <strong id="ai-label">AI MARKET SENTIMENT</strong>
+                </div>
+                <p id="ia-status">Booting neural engine...</p>
             </div>
-        </div>
 
-        <div class="dashboard" id="main-dashboard">
-            </div>
+            <div class="watchlist-header">MARKET WATCH</div>
+            <div id="main-dashboard" class="asset-list">
+                </div>
+        </aside>
 
-        <div class="chart-section">
+        <section class="chart-container">
             <div id="chart-widget"></div>
-        </div>
+        </section>
+
     </main>
 
-    <div id="asset-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modal-body">
-                </div>
+    <div id="asset-modal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <div id="modal-body"></div>
         </div>
     </div>
 
