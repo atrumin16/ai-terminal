@@ -1,40 +1,50 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terminal Financiero IA</title>
+    <title>Quantum Terminal | AI Financial Hub</title>
     <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
 <body>
 
     <header class="header">
-        <h1>Terminal Financiero V1</h1>
+        <div class="logo">QUANTUM<span>TERMINAL</span></div>
+        <div class="search-container">
+            <input type="text" id="asset-search" placeholder="Search 2,000+ assets (btc, gold, eur, apple...)" oninput="searchAssets()">
+            <div id="search-results" class="search-results"></div>
+        </div>
+        <div class="lang-switcher">
+            <button onclick="setLanguage('en')">EN</button>
+            <button onclick="setLanguage('es')">ES</button>
+        </div>
     </header>
 
     <main class="container">
         <div class="ia-panel">
-            🤖 Análisis IA: <span id="ia-status">Analizando el mercado...</span>
-        </div>
-
-        <div class="dashboard">
-            <div class="card">
-                <h3>Bitcoin (BTC)</h3>
-                <div class="price" id="price-btc">Cargando...</div>
-            </div>
-            <div class="card">
-                <h3>Oro (XAU/USD)</h3>
-                <div class="price" id="price-xau">Cargando...</div>
-            </div>
-            <div class="card">
-                <h3>Euro (EUR/USD)</h3>
-                <div class="price" id="price-eur">Cargando...</div>
+            <span class="ai-icon">🤖</span>
+            <div class="ai-content">
+                <small id="ai-label">AI MARKET SENTIMENT</small>
+                <div id="ia-status">Initializing neural engine...</div>
             </div>
         </div>
 
-        <div class="chart-container" id="chart-widget">
+        <div class="dashboard" id="main-dashboard">
             </div>
+
+        <div class="chart-section">
+            <div id="chart-widget"></div>
+        </div>
     </main>
+
+    <div id="asset-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modal-body">
+                </div>
+        </div>
+    </div>
 
     <script src="js/main.js"></script>
 </body>
