@@ -59,7 +59,10 @@ function searchAssets() {
         return; 
     }
 
-    const matches = Object.keys(state.allAssets).filter(key => key.includes(query)).slice(0, 10);
+    // startsWith lo hace más exacto y slice(0, 1) muestra solo 1 resultado
+    const matches = Object.keys(state.allAssets)
+        .filter(key => key.startsWith(query))
+        .slice(0, 1);
     
     resultsDiv.innerHTML = matches.map(m => `
         <div class="search-item" onclick="selectAsset('${m}')">
