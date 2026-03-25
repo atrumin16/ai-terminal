@@ -5,11 +5,10 @@ const state = {
 };
 
 const i18n = {
-    en: { title: "AI MARKET SENTIMENT", online: "System online. Normal volatility.", offline: "Offline mode. Check connection.", search: "Search 2,000+ assets..." },
-    es: { title: "SENTIMIENTO DE MERCADO IA", online: "Sistema en línea. Volatilidad normal.", offline: "Modo sin conexión. Revisa tu red.", search: "Buscar +2,000 activos..." }
+    en: { title: "AI MARKET SENTIMENT", online: "System online. Normal volatility.", offline: "Offline mode. Check connection.", search: "Search markets (e.g., btc, eur, xau)..." },
+    es: { title: "SENTIMIENTO DE MERCADO IA", online: "Sistema en línea. Volatilidad normal.", offline: "Modo sin conexión. Revisa tu red.", search: "Buscar mercados (ej: btc, eur, xau)..." }
 };
 
-// 1. Iniciar API
 async function init() {
     setLanguage(state.lang);
     try {
@@ -23,16 +22,14 @@ async function init() {
         statusEl.style.color = "#00e676";
         
         renderDashboard();
-        loadChart('BINANCE:BTCUSD'); // Cargar gráfico por defecto
+        loadChart('BINANCE:BTCUSD'); 
     } catch (err) {
-        console.error(err);
         const statusEl = document.getElementById('ia-status');
         statusEl.innerText = i18n[state.lang].offline;
-        statusEl.style.color = "red";
+        statusEl.style.color = "#ff5252";
     }
 }
 
-// 2. Renderizar Tarjetas
 function renderDashboard() {
     const container = document.getElementById('main-dashboard');
     if(!container) return;
@@ -42,16 +39,17 @@ function renderDashboard() {
         if (!rate) return '';
         
         const price = 1 / rate;
+        const formattedPrice = price > 1 ? price.toLocaleString('en-US', {maximumFractionDigits: 2}) : price.toFixed(6);
+        
         return `
             <div class="card" onclick="showDetails('${sym}')">
-                <h3>${sym.toUpperCase()}/USD</h3>
-                <div class="price">$${price > 1 ? price.toLocaleString('en-US', {maximumFractionDigits: 2}) : price.toFixed(6)}</div>
+                <h3>${sym}</h3>
+                <div class="price">$${formattedPrice}</div>
             </div>
         `;
     }).join('');
 }
 
-// 3. Buscador
 function searchAssets() {
     const query = document.getElementById('asset-search').value.toLowerCase();
     const resultsDiv = document.getElementById('search-results');
@@ -61,7 +59,7 @@ function searchAssets() {
         return; 
     }
 
-    const matches = Object.keys(state.allAssets).filter(key => key.includes(query)).slice(0, 8);
+    const matches = Object.keys(state.allAssets).filter(key => key.includes(query)).slice(0, 10);
     
     resultsDiv.innerHTML = matches.map(m => `
         <div class="search-item" onclick="selectAsset('${m}')">
@@ -72,7 +70,6 @@ function searchAssets() {
     resultsDiv.style.display = 'block';
 }
 
-// 4. Seleccionar Activo
 function selectAsset(symbol) {
     if (!state.symbols.includes(symbol)) {
         state.symbols.unshift(symbol);
@@ -83,31 +80,29 @@ function selectAsset(symbol) {
     showDetails(symbol);
 }
 
-// 5. Modal de Detalles e IA Estática
 function showDetails(sym) {
     const modal = document.getElementById('asset-modal');
     const price = 1 / state.allAssets[sym];
+    const formattedPrice = price > 1 ? price.toLocaleString('en-US') : price.toFixed(6);
     
-    // Lógica IA simple
-    let aiPrediction = price > 1000 ? "High value asset detected. Expect institutional movements." : "Micro-cap/Forex volatility zone. Trade with caution.";
-    if (sym === 'btc' || sym === 'eth') aiPrediction = "Major crypto flow detected. Bullish accumulation.";
+    let aiPrediction = price > 1000 ? "High value asset. Expect institutional movements." : "Micro-cap/Forex zone. Trade with caution.";
+    if (['btc', 'eth', 'sol'].includes(sym)) aiPrediction = "Crypto flow detected. Monitoring volatility.";
 
     document.getElementById('modal-body').innerHTML = `
-        <h2>${sym.toUpperCase()} / USD</h2>
-        <p>Current Price: <strong>$${price > 1 ? price.toLocaleString('en-US') : price.toFixed(6)}</strong></p>
-        <hr style="border-color:#363a45; margin: 15px 0;">
-        <p style="color: #2962ff; font-weight: bold;">🤖 AI Insight:</p>
-        <p><em>${aiPrediction}</em></p>
-        <button onclick="updateChart('${sym}')" style="margin-top:15px; background:#2962ff; color:white; border:none; padding:10px 15px; border-radius:4px; cursor:pointer; font-weight:bold;">View on Chart</button>
+        <h2>${sym} / USD</h2>
+        <p style="font-size: 20px; font-family: monospace;">$${formattedPrice}</p>
+        <hr style="border-color:#30363d; margin: 15px 0;">
+        <p style="color: var(--accent); font-size: 12px; font-weight: bold;">🧠 AI Insight:</p>
+        <p style="font-size: 14px; color: #8b949e;">${aiPrediction}</p>
+        <button class="btn-chart" onclick="updateChart('${sym}')">View on Chart</button>
     `;
-    modal.style.display = "block";
+    modal.style.display = "flex"; 
 }
 
 function closeModal() { 
     document.getElementById('asset-modal').style.display = "none"; 
 }
 
-// 6. Selector de Idioma
 function setLanguage(lang) {
     state.lang = lang;
     localStorage.setItem('lang', lang);
@@ -124,7 +119,6 @@ function setLanguage(lang) {
     }
 }
 
-// 7. Gráficos de TradingView
 function loadChart(symbolConfig) {
     const chartContainer = document.getElementById('chart-widget');
     if(!chartContainer) return;
@@ -143,6 +137,11 @@ function loadChart(symbolConfig) {
             "theme": "dark",
             "style": "1",
             "locale": state.lang,
+            "enable_publishing": false,
+            "backgroundColor": "#0d1117",
+            "gridColor": "#30363d",
+            "hide_top_toolbar": false,
+            "save_image": false,
             "container_id": "chart-widget"
         });
     };
@@ -151,13 +150,11 @@ function loadChart(symbolConfig) {
 
 function updateChart(sym) {
     closeModal();
-    // Mapeo básico de tickers para TradingView
     let tvSymbol = "BINANCE:" + sym.toUpperCase() + "USDT";
-    if(sym === 'xau' || sym === 'eur') tvSymbol = "OANDA:" + sym.toUpperCase() + "USD";
+    if(['xau', 'xag', 'eur', 'gbp', 'jpy'].includes(sym)) tvSymbol = "OANDA:" + sym.toUpperCase() + "USD";
     if(sym === 'aapl') tvSymbol = "NASDAQ:AAPL";
     
     loadChart(tvSymbol);
-    document.querySelector('.chart-section').scrollIntoView({behavior: "smooth"});
 }
 
 window.onload = init;
