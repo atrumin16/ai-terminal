@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terminal Financiero IA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header class="header">
+        <h1>Terminal Financiero V1</h1>
+    </header>
+
+    <main class="container">
+        <div class="ia-panel">
+            🤖 Análisis IA: <span id="ia-status">Analizando el mercado...</span>
+        </div>
+
+        <div class="dashboard">
+            <div class="card">
+                <h3>Bitcoin (BTC)</h3>
+                <div class="price" id="price-btc">Cargando...</div>
+            </div>
+            <div class="card">
+                <h3>Oro (XAU/USD)</h3>
+                <div class="price" id="price-xau">Cargando...</div>
+            </div>
+            <div class="card">
+                <h3>Euro (EUR/USD)</h3>
+                <div class="price" id="price-eur">Cargando...</div>
+            </div>
+        </div>
+
+        <div class="chart-container" id="chart-widget">
+            </div>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
