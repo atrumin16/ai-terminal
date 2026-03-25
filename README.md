@@ -7,7 +7,6 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Language-Bilingual-blue?style=flat-square" alt="Bilingual">
   <img src="https://img.shields.io/badge/Architecture-Serverless-black?style=flat-square" alt="Serverless">
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT">
 </p>
